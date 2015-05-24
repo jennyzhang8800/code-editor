@@ -38,6 +38,7 @@ class JennystartXBlock(XBlock):
         frag.add_css(self.resource_string("static/css/codemirror.css"))
         frag.add_javascript(self.resource_string("static/js/src/jennystart.js"))
         frag.add_javascript(self.resource_string("static/js/src/codemirror.js"))
+        frag.add_javascript(self.resource_string("static/js/src/active-line.js"))
         frag.initialize_js('JennystartXBlock')
         return frag
 

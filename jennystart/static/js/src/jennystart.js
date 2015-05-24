@@ -18,5 +18,12 @@ function JennystartXBlock(runtime, element) {
 
     $(function ($) {
         /* Here's where you'd do things on page load. */
+        CodeMirror.fromTextArea(document.getElementById("code"), {
+            lineNumbers: true,
+            styleActiveLine:true
+
+
+        });
+
     });
 }
