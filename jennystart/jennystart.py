@@ -36,9 +36,12 @@ class JennystartXBlock(XBlock):
         frag = Fragment(html.format(self=self))
         frag.add_css(self.resource_string("static/css/jennystart.css"))
         frag.add_css(self.resource_string("static/css/codemirror.css"))
+        frag.add_css(self.resource_string("static/css/night.css"))
         frag.add_javascript(self.resource_string("static/js/src/jennystart.js"))
         frag.add_javascript(self.resource_string("static/js/src/codemirror.js"))
         frag.add_javascript(self.resource_string("static/js/src/active-line.js"))
+        frag.add_javascript(self.resource_string("static/js/src/clike.js"))
+        frag.add_javascript(self.resource_string("static/js/src/matchbrackets.js"))
         frag.initialize_js('JennystartXBlock')
         return frag
 
