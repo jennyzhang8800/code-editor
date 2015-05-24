@@ -1,29 +1,74 @@
-/* Javascript for JennystartXBlock. */
-function JennystartXBlock(runtime, element) {
+"""TO-DO: Write a description of what this XBlock is."""
 
-    function updateCount(result) {
-        $('.count', element).text(result.count);
-    }
+import pkg_resources
 
-    var handlerUrl = runtime.handlerUrl(element, 'increment_count');
-
-    $('p', element).click(function(eventObject) {
-        $.ajax({
-            type: "POST",
-            url: handlerUrl,
-            data: JSON.stringify({"hello": "world"}),
-            success: updateCount
-        });
-    });
-
-    $(function ($) {
-        /* Here's where you'd do things on page load. */
-        CodeMirror.fromTextArea(document.getElementById("code"), {
-            lineNumbers: true,
-            styleActiveLine:true
+from xblock.core import XBlock
+from xblock.fields import Scope, Integer
+from xblock.fragment import Fragment
 
 
-        });
+class JennystartXBlock(XBlock):
+    """
+    TO-DO: document what your XBlock does.
+    """
 
-    });
-}
+    # Fields are defined on the class.  You can access them in your code as
+    # self.<fieldname>.
+
+    # TO-DO: delete count, and define your own fields.
+    count = Integer(
+        default=0, scope=Scope.user_state,
+        help="A simple counter, to show something happening",
+        )
+
+    def resource_string(self, path):
+        """Handy helper for getting resources from our kit."""
+        data = pkg_resources.resource_string(__name__, path)
+        return data.decode("utf8")
+
+    # TO-DO: change this view to display your data your own way.
+    def student_view(self, context=None):
+        """
+        The primary view of the JennystartXBlock, shown to students
+        when viewing courses.
+        """
+        html = self.resource_string("static/html/jennystart.html")
+        frag = Fragment(html.format(self=self))
+        frag.add_css(self.resource_string("static/css/jennystart.css"))
+        frag.add_css(self.resource_string("static/css/codemirror.css"))
+        frag.add_css(self.resource_string("static/css/night.css"))
+        frag.add_javascript(self.resource_string("static/js/src/jennystart.js"))
+        frag.add_javascript(self.resource_string("static/js/src/codemirror.js"))
+        frag.add_javascript(self.resource_string("static/js/src/active-line.js"))
+        frag.add_javascript(self.resource_string("static/js/src/clike.js"))
+        frag.add_javascript(self.resource_string("static/js/src/matchbrackets.js"))
+        frag.initialize_js('JennystartXBlock')
+        return frag
+
+    # TO-DO: change this handler to perform your own actions.  You may need more
+    # than one handler, or you may not need any handlers at all.
+    @XBlock.json_handler
+    def increment_count(self, data, suffix=''):
+        """
+        An example handler, which increments the data.
+        """
+        # Just to show data coming in...
+        assert data['hello'] == 'world'
+
+        self.count += 1
+        return {"count": self.count}
+
+    # TO-DO: change this to create the scenarios you'd like to see in the
+    # workbench while developing your XBlock.
+    @staticmethod
+    def workbench_scenarios():
+        """A canned scenario for display in the workbench."""
+        return [
+            ("JennystartXBlock",
+             """<vertical_demo>
+                <jennystart/>
+                <jennystart/>
+                <jennystart/>
+                </vertical_demo>
+             """),
+            ]
