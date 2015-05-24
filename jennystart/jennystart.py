@@ -19,7 +19,7 @@ class JennystartXBlock(XBlock):
     count = Integer(
         default=0, scope=Scope.user_state,
         help="A simple counter, to show something happening",
-    )
+        )
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -35,7 +35,9 @@ class JennystartXBlock(XBlock):
         html = self.resource_string("static/html/jennystart.html")
         frag = Fragment(html.format(self=self))
         frag.add_css(self.resource_string("static/css/jennystart.css"))
+        frag.add_css(self.resource_string("static/css/codemirror.css"))
         frag.add_javascript(self.resource_string("static/js/src/jennystart.js"))
+        frag.add_javascript(self.resource_string("static/js/src/codemirror.js"))
         frag.initialize_js('JennystartXBlock')
         return frag
 
@@ -65,4 +67,4 @@ class JennystartXBlock(XBlock):
                 <jennystart/>
                 </vertical_demo>
              """),
-        ]
+            ]
