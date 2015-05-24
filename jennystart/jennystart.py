@@ -4,7 +4,7 @@ __author__ = 'zhangyanni'
 import pkg_resources
 
 from xblock.core import XBlock
-from xblock.fields import Scope, Integer
+from xblock.fields import Scope, Integer, String
 from xblock.fragment import Fragment
 
 from lib_util import Util
@@ -23,6 +23,7 @@ class JennystartXBlock(XBlock):
         default=0, scope=Scope.user_state,
         help="A simple counter, to show something happening",
         )
+    codeData = String(default="this is my test", scope=Scope.user_state, help="codeData")
     logger = Util .uc_logger()
 
 
@@ -32,8 +33,9 @@ class JennystartXBlock(XBlock):
         The primary view of the JennystartXBlock, shown to students
         when viewing courses.
         """
+        context_dict={"codeData":self.codeData}
         fragment = Fragment()
-        fragment.add_content(Util.load_resource("static/html/jennystart.html"))
+        fragment.add_content(Util.render_template("static/html/jennystart.html",context_dict) )
         fragment.add_css(Util.load_resource("static/css/jennystart.css"))
         fragment.add_css(Util.load_resource("static/css/codemirror.css"))
         fragment.add_css(Util.load_resource("static/css/night.css"))
