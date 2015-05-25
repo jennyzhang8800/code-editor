@@ -34,7 +34,7 @@ class JennystartXBlock(XBlock):
         when viewing courses.
         """
        
-        output=open("/edx/var/edxapp/staticfiles/ucore/0f28b5d49b3020afeecd95b4009adf4c/ucore_lab/labcodes/lab1/boot/bootmain.c","r")
+        output=open("/edx/var/edxapp/staticfiles/ucore/0f28b5d49b3020afeecd95b4009adf4c/ucore_lab/labcodes/lab1/boot/bootmain.c")
         self.codeData =output.read()
         output.close()
         context_dict={"codeData":self.codeData}

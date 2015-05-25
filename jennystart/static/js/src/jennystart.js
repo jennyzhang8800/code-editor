@@ -16,6 +16,11 @@ function JennystartXBlock(runtime, element) {
         });
     });
 
+    $('#cancel', element).click(function(eventObject) {
+        $('#code', element).text("");
+    });
+        
+
     $(function ($) {
         /* Here's where you'd do things on page load. */
        var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
