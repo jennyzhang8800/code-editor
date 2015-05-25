@@ -33,11 +33,11 @@ class JennystartXBlock(XBlock):
         The primary view of the JennystartXBlock, shown to students
         when viewing courses.
         """
-       
+
         output=open("/edx/var/edxapp/staticfiles/ucore/0f28b5d49b3020afeecd95b4009adf4c/ucore_lab/labcodes/lab1/boot/bootmain.c")
         self.codeData =output.read()
         output.close()
-        context_dict={"codeData":self.codeData}
+        context_dict={"file": r"lab1/boot/bootmain.c"}
 
         fragment = Fragment()
         fragment.add_content(Util.render_template("static/html/jennystart.html",context_dict) )
@@ -63,7 +63,8 @@ class JennystartXBlock(XBlock):
         assert data['hello'] == 'world'
 
         self.count += 1
-        return {"count": self.count}
+        return {"count": self.count, "codeData": self.codeData}
+
 
     # TO-DO: change this to create the scenarios you'd like to see in the
     # workbench while developing your XBlock.
