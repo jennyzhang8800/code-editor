@@ -19,11 +19,8 @@ class JennystartXBlock(XBlock):
     # self.<fieldname>.
 
     # TO-DO: delete count, and define your own fields.
-    count = Integer(
-        default=0, scope=Scope.user_state,
-        help="A simple counter, to show something happening",
-        )
-    codeData = String(default="this is my test", scope=Scope.user_state, help="codeData")
+    codeData = String(default="", scope=Scope.user_state, help="codeData")
+    file_path=String(default="", scope=Scope.user_state, help="file_path")
     logger = Util .uc_logger()
 
 
@@ -33,11 +30,16 @@ class JennystartXBlock(XBlock):
         The primary view of the JennystartXBlock, shown to students
         when viewing courses.
         """
+        student_id="0f28b5d49b3020afeecd95b4009adf4c"
+        base_path="/edx/var/edxapp/staticfiles/ucore/"
+        relative_path="/ucore_lab/labcodes/lab1/boot/bootmain.c"
+        self.file_path=base_path+student_id+relative_path
 
-        output=open("/edx/var/edxapp/staticfiles/ucore/0f28b5d49b3020afeecd95b4009adf4c/ucore_lab/labcodes/lab1/boot/bootmain.c")
+        output=open(self.file_path)
         self.codeData =output.read()
         output.close()
-        context_dict={"file": r"lab1/boot/bootmain.c"}
+
+        context_dict={"file":relative_path}
 
         fragment = Fragment()
         fragment.add_content(Util.render_template("static/html/jennystart.html",context_dict) )
@@ -61,9 +63,21 @@ class JennystartXBlock(XBlock):
         """
         # Just to show data coming in...
         assert data['hello'] == 'world'
+        return {"codeData":self.codeData}
 
-        self.count += 1
-        return {"count": self.count, "codeData": self.codeData}
+    @XBlock.json_handler
+    def save_file(self, data, suffix=''):
+        """
+        save_file handler, which save the changed data on codemirror.
+        """
+        # save the changed datd to file...
+        self.logger.info("save_file_invoke")
+        self.codeData=data['codeData']
+
+        output=open(self.file_path,"wb")
+        output.write(self.codeData)
+        output.close()
+        return True
 
 
     # TO-DO: change this to create the scenarios you'd like to see in the
@@ -74,9 +88,14 @@ class JennystartXBlock(XBlock):
         return [
             ("JennystartXBlock",
              """<vertical_demo>
-                <jennystart/>
-                <jennystart/>
-                <jennystart/>
-                </vertical_demo>
-             """),
+               <jennystart/>
+               <jennystart/>
+               <jennystart/>
+               </vertical_demo>
+            """),
             ]
+
+
+
+
+
