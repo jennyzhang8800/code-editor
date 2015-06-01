@@ -9,7 +9,7 @@ function JennystartXBlock(runtime, element) {
 
     var handlerUrl = runtime.handlerUrl(element, 'increment_count');
     var saveHandlerUrl = runtime.handlerUrl(element, 'save_file');
-    var editor
+    var editor;
 
     $('.cancel',element).click(function(eventObject){
         editor.setValue("");
@@ -24,6 +24,29 @@ function JennystartXBlock(runtime, element) {
         });
 
     });
+
+    function GetRequest()
+    {
+        var url = location.search;
+        var theRequest = new Object();
+        if(url.indexOf("?") != -1)
+        {
+            var str = url.substr(1);
+            var strs = str.split("&");
+            for(var i = 0; i < strs.length; i ++)
+            {
+                theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+
+    var Request=new Object();
+    Request=GetRequest();
+    var student_id,file_path;
+    file_path=Request["file_path"];
+    student_id=Request["student_id"];
+    alert("student_id:"+student_id+", file_path:"+file_path);
 
     $(function ($) {
         /* Here's where you'd do things on page load. */
