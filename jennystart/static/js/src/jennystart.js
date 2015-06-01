@@ -70,7 +70,7 @@ function JennystartXBlock(runtime, element) {
         $.ajax({
             type: "POST",
             url: handlerUrl,
-            data: JSON.stringify({"hello": "world"}),
+            data: JSON.stringify({"student_id": student_id ,"file_path":file_path}),
             success:function(data){editor.setValue(data.codeData);}
         });
 

@@ -21,6 +21,7 @@ class JennystartXBlock(XBlock):
     # TO-DO: delete count, and define your own fields.
     codeData = String(default="", scope=Scope.user_state, help="codeData")
     file_path=String(default="", scope=Scope.user_state, help="file_path")
+    real_path=String(default="", scope=Scope.user_state, help="real_path")
     logger = Util .uc_logger()
 
 
@@ -30,16 +31,9 @@ class JennystartXBlock(XBlock):
         The primary view of the JennystartXBlock, shown to students
         when viewing courses.
         """
-        student_id="0f28b5d49b3020afeecd95b4009adf4c"
-        base_path="/edx/var/edxapp/staticfiles/ucore/"
-        relative_path="/ucore_lab/labcodes/lab1/boot/bootmain.c"
-        self.file_path=base_path+student_id+relative_path
 
-        output=open(self.file_path)
-        self.codeData =output.read()
-        output.close()
 
-        context_dict={"file":relative_path}
+        context_dict={"file":self.file_path}
 
         fragment = Fragment()
         fragment.add_content(Util.render_template("static/html/jennystart.html",context_dict) )
@@ -62,7 +56,15 @@ class JennystartXBlock(XBlock):
         An example handler, which increments the data.
         """
         # Just to show data coming in...
-        assert data['hello'] == 'world'
+        
+        self.file_path = data['file_path']
+        student_id = data['student_id']
+        base_path="/edx/var/edxapp/staticfiles/ucore/"
+        self.real_path=base_path+student_id+self.file_path
+
+        output=open(self.real_path)
+        self.codeData =output.read()
+        output.close()
         return {"codeData":self.codeData}
 
     @XBlock.json_handler
@@ -74,7 +76,7 @@ class JennystartXBlock(XBlock):
         self.logger.info("save_file_invoke")
         self.codeData=data['codeData']
 
-        output=open(self.file_path,"wb")
+        output=open(self.real_path,"wb")
         output.write(self.codeData)
         output.close()
         return True
