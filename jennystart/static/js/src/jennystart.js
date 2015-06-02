@@ -10,7 +10,7 @@ function JennystartXBlock(runtime, element) {
     var editor;
 
     function commitCallBack(result){
-     alert(result.messege);
+     alert("already push to gitlab!");
     }
     function saveCallBack(result){
 
