@@ -88,9 +88,9 @@ class JennystartXBlock(XBlock):
         self.logger.info("commit_to_gitlab")
         commit_messege=data[commit_messege]
 
-        student_id = self.runtime.anonymous_student_id
-        real_user = self.runtime.get_real_user(self.runtime.anonymous_student_id)
-        email = real_user.email
+        #student_id = self.runtime.anonymous_student_id
+        #real_user = self.runtime.get_real_user(self.runtime.anonymous_student_id)
+        #email = real_user.email
         #os.system("/edx/var/edxapp/staticfiles/xblock-script/pushToGit.sh "  + student_id + " " + email + " " + commit_messege)
         messege="already push to gitlab"
 
