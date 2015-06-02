@@ -79,6 +79,23 @@ class JennystartXBlock(XBlock):
         output.close()
         return True
 
+    @XBlock.json_handler
+    def commit_to_git(self, data, suffix=''):
+        """
+        commit_to_git handler, which push code to gitlab.
+        """
+        
+        self.logger.info("commit_to_gitlab")
+        commit_messege=data[commit_messege]
+
+        student_id = self.runtime.anonymous_student_id
+        real_user = self.runtime.get_real_user(self.runtime.anonymous_student_id)
+        email = real_user.email
+        #os.system("/edx/var/edxapp/staticfiles/xblock-script/pushToGit.sh "  + student_id + " " + email + " " + commit_messege)
+        messege="already push to gitlab"
+
+        return {"messege":messege}
+
 
     # TO-DO: change this to create the scenarios you'd like to see in the
     # workbench while developing your XBlock.

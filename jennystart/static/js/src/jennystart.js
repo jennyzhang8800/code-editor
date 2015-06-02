@@ -2,14 +2,32 @@
 function JennystartXBlock(runtime, element) {
 
 
-    function saveCallBack(result){
-
-        alert("save successfully!");
-    }
+    
 
     var handlerUrl = runtime.handlerUrl(element, 'increment_count');
     var saveHandlerUrl = runtime.handlerUrl(element, 'save_file');
-    var editor
+    var commitHandlerUrl = runtime.handlerUrl(element, 'commit_to_git');
+    var editor;
+
+    function commitCallBack(result){
+     alert(result.messege);
+    }
+    function saveCallBack(result){
+
+        var commit_messege=prompt("If you want to push the change to gitlab please input commit messege:","initialize commit");
+        if (commit_messege!=null && commit_messege!="")
+
+      {
+
+        $.ajax({
+            type: "POST",
+            url: commitHandlerUrl,
+            data: JSON.stringify({"commit_messege":commit_messege}),
+            success:commitCallBack
+        });
+
+      }
+    }
 
     $('.cancel',element).click(function(eventObject){
         editor.setValue("");
