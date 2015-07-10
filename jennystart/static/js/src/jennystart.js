@@ -4,7 +4,7 @@ function JennystartXBlock(runtime, element) {
 
     
 
-    var handlerUrl = runtime.handlerUrl(element, 'increment_count');
+    var readFileHandlerUrl = runtime.handlerUrl(element, 'read_file');
     var saveHandlerUrl = runtime.handlerUrl(element, 'save_file');
     var commitHandlerUrl = runtime.handlerUrl(element, 'commit_to_git');
     var editor;
@@ -42,6 +42,15 @@ function JennystartXBlock(runtime, element) {
         });
 
     });
+    $('.read',element).click(function(eventObject){
+        var relative_path = document.getElementById("relative_path").value;
+        $.ajax({
+            type: "POST",
+            url: readFileHandlerUrl,
+            data: JSON.stringify({"relative_path": relative_path}),
+            success:function(data){editor.setValue(data.codeData);}
+        });
+    });
 
     $(function ($) {
         /* Here's where you'd do things on page load. */
@@ -62,12 +71,7 @@ function JennystartXBlock(runtime, element) {
 
         });
 
-        $.ajax({
-            type: "POST",
-            url: handlerUrl,
-            data: JSON.stringify({"hello": "world"}),
-            success:function(data){editor.setValue(data.codeData);}
-        });
+
 
     });
 }
