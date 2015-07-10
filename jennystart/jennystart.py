@@ -31,6 +31,7 @@ class JennystartXBlock(XBlock):
         when viewing courses.
         """
         student_id="0f28b5d49b3020afeecd95b4009adf4c"
+        student_id_1=self.runtime.anonymous_student_id
         base_path="/edx/var/edxapp/staticfiles/ucore/"
         relative_path="/ucore_lab/labcodes/lab1/boot/bootmain.c"
         self.file_path=base_path+student_id+relative_path
@@ -39,7 +40,7 @@ class JennystartXBlock(XBlock):
         self.codeData =output.read()
         output.close()
 
-        context_dict={"file":relative_path}
+        context_dict={"file":student_id_1}
 
         fragment = Fragment()
         fragment.add_content(Util.render_template("static/html/jennystart.html",context_dict) )
