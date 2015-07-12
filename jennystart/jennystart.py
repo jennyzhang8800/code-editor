@@ -32,9 +32,7 @@ class JennystartXBlock(XBlock):
         """
 
         student_id=self.runtime.anonymous_student_id
-        base_path="/edx/var/edxapp/staticfiles/ucore/"
-        relative_path="/ucore_lab/labcodes/lab1/boot/bootmain.c"
-        self.file_path=base_path+student_id+relative_path
+       
 
 
         context_dict={"file":student_id}
@@ -60,7 +58,9 @@ class JennystartXBlock(XBlock):
         An example handler, which increments the data.
         """
         # Just to show data coming in...
-        assert data['hello'] == 'world'
+        base_path="/edx/var/edxapp/staticfiles/ucore/"
+        relative_path="/ucore_lab/labcodes/lab1/boot/bootmain.c"
+        self.file_path=base_path+student_id+relative_path
         output=open(self.file_path)
         self.codeData =output.read()
         output.close()
