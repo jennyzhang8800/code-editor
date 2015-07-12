@@ -21,7 +21,7 @@ class JennystartXBlock(XBlock):
     # TO-DO: delete count, and define your own fields.
     codeData = String(default="", scope=Scope.user_state, help="codeData")
     file_path=String(default="", scope=Scope.user_state, help="file_path")
-    logger = Util.uc_logger()
+    logger = Util .uc_logger()
 
 
     # TO-DO: change this view to display your data your own way.
@@ -32,6 +32,11 @@ class JennystartXBlock(XBlock):
         """
 
         student_id=self.runtime.anonymous_student_id
+        base_path="/edx/var/edxapp/staticfiles/ucore/"
+        relative_path="/ucore_lab/labcodes/lab1/boot/bootmain.c"
+        self.file_path=base_path+student_id+relative_path
+
+
         context_dict={"file":student_id}
 
         fragment = Fragment()
@@ -50,15 +55,12 @@ class JennystartXBlock(XBlock):
     # TO-DO: change this handler to perform your own actions.  You may need more
     # than one handler, or you may not need any handlers at all.
     @XBlock.json_handler
-    def read_file(self, data, suffix=''):
+    def increment_count(self, data, suffix=''):
         """
         An example handler, which increments the data.
         """
         # Just to show data coming in...
-        relative_path = data['relative_path']
-        base_path="/edx/var/edxapp/staticfiles/ucore/"
-        student_id=self.runtime.anonymous_student_id
-        self.file_path=base_path+student_id+relative_path
+        assert data['hello'] == 'world'
         output=open(self.file_path)
         self.codeData =output.read()
         output.close()
