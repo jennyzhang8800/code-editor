@@ -31,22 +31,21 @@ class JennystartXBlock(XBlock):
         when viewing courses.
         """
 
-        student_id=self.runtime.anonymous_student_id
-       
-
-
+        student_id=self.runtime.anonymous_student_id      
         context_dict={"file":student_id}
 
         fragment = Fragment()
         fragment.add_content(Util.render_template("static/html/jennystart.html",context_dict) )
         fragment.add_css(Util.load_resource("static/css/jennystart.css"))
         fragment.add_css(Util.load_resource("static/css/codemirror.css"))
-        fragment.add_css(Util.load_resource("static/css/night.css"))
+        fragment.add_css(Util.load_resource("static/css/fullscreen.css"))
+      
         fragment.add_javascript(Util.load_resource("static/js/src/jennystart.js"))
         fragment.add_javascript(Util.load_resource("static/js/src/codemirror.js"))
         fragment.add_javascript(Util.load_resource("static/js/src/active-line.js"))
         fragment.add_javascript(Util.load_resource("static/js/src/clike.js"))
         fragment.add_javascript(Util.load_resource("static/js/src/matchbrackets.js"))
+        fragment.add_javascript(Util.load_resource("static/js/src/fullscreen.js"))
         fragment.initialize_js('JennystartXBlock')
         return fragment
 
@@ -55,11 +54,12 @@ class JennystartXBlock(XBlock):
     @XBlock.json_handler
     def increment_count(self, data, suffix=''):
         """
-        An example handler, which increments the data.
+        An  handler, which read the data.
         """
-        # Just to show data coming in...
+        
         base_path="/edx/var/edxapp/staticfiles/ucore/"
-        relative_path="/ucore_lab/labcodes/lab1/boot/bootmain.c"
+        relative_path=data['relative_path']
+        student_id=self.runtime.anonymous_student_id
         self.file_path=base_path+student_id+relative_path
         output=open(self.file_path)
         self.codeData =output.read()
@@ -89,9 +89,10 @@ class JennystartXBlock(XBlock):
         
         self.logger.info("commit_to_gitlab")
         commit_messege=data['commit_messege']
-
-        
-        #os.system("/edx/var/edxapp/staticfiles/xblock-script/pushToGit.sh "  + student_id + " " + email + " " + commit_messege)
+        student_id=self.runtime.anonymous_student_id
+        real_user=self.runtime.get_real_user(self.runtime.anonymous_student_id)
+        email=real_user.email
+        os.system("/edx/var/edxapp/staticfiles/xblock-script/pushToGit.sh "  + student_id + " " + email + " " + commit_messege)
         messege="already push to gitlab"
 
         return {"messege":messege}

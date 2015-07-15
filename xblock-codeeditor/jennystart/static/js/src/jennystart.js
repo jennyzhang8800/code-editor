@@ -44,7 +44,7 @@ function JennystartXBlock(runtime, element) {
     });
     $('.read',element).click(function(eventObject){
         var relative_path = document.getElementById("relative_path").value;
-        alert(relative_path);
+      
         
         $.ajax({
             type: "POST",
@@ -54,6 +54,22 @@ function JennystartXBlock(runtime, element) {
         });
 
     });
+    
+     $('.fullscreen',element).click(function(eventObject){
+        var screen = document.getElementById("jennystart_block");
+  
+        if(screen.requestFullscreen){
+            screen.requestFullscreen)();
+         }
+        else if (screen.mozRequestFullScreen){
+           screen.mozRequestFullScreen();
+         }
+        else if (screen.webkitRequestFullscreen){
+           screen.webkitRequestFullscreen();
+        }
+
+    });
+    
 
 
     $(function ($) {
